@@ -68,9 +68,8 @@ export function createNewArray() {
   parent.innerHTML = '';
   barArray = Array.from({length: arraySize}, () => Math.floor(Math.random() * 251));
   
-  // FIXED: Dynamic bar sizing that fits container properly
   const containerWidth = parent.offsetWidth || 800;
-  const availableWidth = containerWidth * 0.8; // Use 80% to leave space at edges
+  const availableWidth = containerWidth * 0.8; 
   const barWidth = Math.max(2, Math.min(20, availableWidth / arraySize));
   const barMargin = Math.max(0, Math.min(2, (availableWidth - (barWidth * arraySize)) / arraySize));
   
@@ -85,11 +84,9 @@ export function createNewArray() {
   }
 }
 
-// FIXED: Proper pause-aware delay
 export async function delayTime(ms = delay) {
   await new Promise(r => setTimeout(r, ms));
   
-  // Wait while paused
   while (paused && sorting) {
     await new Promise(r => setTimeout(r, 50));
   }
@@ -105,7 +102,6 @@ export function swapBars(bar1, bar2) {
   bar2.style.height = t;
 }
 
-// ENHANCED: Proper pause/resume/stop logic
 export function pauseSort() { 
   paused = true; 
   setUIPaused();
@@ -118,7 +114,6 @@ export function resumeSort() {
 
 export function stepSort() { 
   paused = false;
-  // Will pause again after one step
   setTimeout(() => {
     if (sorting) pauseSort();
   }, delay + 50);
@@ -131,7 +126,6 @@ export function stopSort() {
   setUIEnabled();
 }
 
-// ADDED: Force stop for algorithm switching
 export function forceStop() {
   running = null;
   sorting = false;
