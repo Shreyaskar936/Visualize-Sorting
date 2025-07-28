@@ -1,61 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<script async src="https://www.googletagmanager.com/gtag/js?id=G-4HHP888F7Y"></script>
-	<script>
-	window.dataLayer = window.dataLayer || [];
-	function gtag(){dataLayer.push(arguments);}
-	gtag('js', new Date());
-	gtag('config', 'G-4HHP888F7Y');
-	</script>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Vizualise Sorting</title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Sorting Visualizer - Modern UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- FIXED: Correct path -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav class="navbar dark-background">
-        <a class="navbar-brand text-color" href="#"><b>Sorting Visualizer</b></a>
-    </nav>
-    <div id="sorting" class="flex-container">
-    </div>
-    <div class="col range-input" id="input-panel">
-        <span id="size" class = "label">Size
-            <input id ="size_input" type="range" value=50 min="1" max="100" style="margin-left: 60px;">
-        </span>
-        <span id="speed" class = "label">Speed
-            <input id="speed_input" type="range" min="20" max="300" value=60 style="margin-left: 60px;">
-        </span>
-    </div>
-    <div class="btn-group-md btn-group-horizontal center" style="margin-bottom: 15px;">
-        <button type="button" class="btn btn-outline-success new" style="margin-right: 5px;">New Array</button>
-        <button type="button" class="btn btn-outline-danger stop" style="margin-left: 1px;" disabled="true">Stop Sorting</button>
-    </div>
-    <div class="col-auto center" id="control-panel">
-        <div class="btn-group-md btn-group-vertical">
-            <button type="button" class="btn btn-outline-light bubbleSort">Bubble Sort</button>
-            <button type="button" class="btn btn-outline-light mergeSort">Merge Sort</button>
-        </div>
-        <div class="btn-group-md btn-group-vertical">
-            <button type="button" class="btn btn-outline-light selectionSort">Selection Sort</button>
-            <button type="button" class="btn btn-outline-light quickSort">Quick Sort</button>
-        </div>
-        <div class="btn-group-md btn-group-vertical">
-            <button type="button" class="btn btn-outline-light insertionSort">Insertion Sort</button>
-            <button type="button" class="btn btn-outline-light heapSort">Heap Sort</button>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
-    <script src="sorting.js" async defer></script>
-    <script src="algorithms/bubbleSort.js" async defer></script>
-    <script src="algorithms/mergeSort.js" async defer></script>
-    <script src="algorithms/selectionSort.js" async defer></script>
-    <script src="algorithms/quickSort.js" async defer></script>
-    <script src="algorithms/insertionSort.js" async defer></script>
-    <script src="algorithms/heapSort.js" async defer></script>
+  <header>
+    <img src="sort.png" alt="Sorting Visualizer Logo" id="logo" />
+    <p class="subtitle">
+      Interactive Animated Visual Comparison of Popular Sorting Algorithms
+    </p>
+  </header>
+
+  <main>
+    <section id="controls-panel" aria-label="Sorting Controls">
+      <div class="row algorithm-controls">
+        <label for="algorithm_select" class="visually-hidden">Choose Algorithm</label>
+        <select id="algorithm_select">
+          <option value="bubble">Bubble Sort</option>
+          <option value="selection">Selection Sort</option>
+          <option value="insertion">Insertion Sort</option>
+          <option value="merge">Merge Sort</option>
+          <option value="quick">Quick Sort</option>
+          <option value="heap">Heap Sort</option>
+        </select>
+        <button id="runSort">Run</button>
+        <button id="pauseSort">Pause</button>
+        <button id="resumeSort">Resume</button>
+        <button id="stepForward">Step</button>
+        <button id="newArray">New Array</button>
+        <button id="stopSort">Stop</button>
+      </div>
+      <div class="row sliders">
+        <label for="size_input">Array Size</label>
+        <input id="size_input" type="range" min="10" max="100" value="60" />
+        <label for="speed_input">Speed</label>
+        <input id="speed_input" type="range" min="20" max="300" value="60" />
+      </div>
+    </section>
+
+    <aside id="legend" aria-label="Color Legend">
+      <h2 class="visually-hidden">Legend</h2>
+      <span class="legend-bar" style="background: #f7f779"></span> Comparing
+      <span class="legend-bar" style="background: #ff4081"></span> Moving/Swapping
+      <span class="legend-bar" style="background: #adff2f"></span> Sorted
+      <span class="legend-bar" style="background: #ffd700"></span> Selected
+      <span class="legend-bar" style="background: #ff5733"></span> Pivot
+      <span class="legend-bar" style="background: #00bfff"></span> Focus
+    </aside>
+
+    <section id="visualizer-container" aria-label="Sorting Visualization">
+      <div id="sorting" class="flex-container" tabindex="0" aria-label="Array Visualization"></div>
+    </section>
+
+    <section id="algo-info" aria-label="Algorithm Information">
+      <h3 id="algorithmName">Bubble Sort</h3>
+      <p id="algorithmDescription">
+        Click "Run" to start visualizing the selected sorting algorithm!
+      </p>
+      <ul id="complexityList">
+        <li><strong>Time Complexity:</strong> <span id="complexityTime">O(n²)</span></li>
+        <li><strong>Space Complexity:</strong> <span id="complexitySpace">O(1)</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <small>© 2025 Shreyaskar Chakraborty - Sorting Visualizer Project. Design & Code with <span aria-label="love">❤️</span></small>
+  </footer>
+  
+  <script type="module" src="scripts/main.js"></script>
 </body>
 </html>
